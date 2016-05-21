@@ -1,0 +1,316 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <style type="text/css">
+        body {
+            padding: 1rem;
+        }
+
+        #afd {
+            max-width: 100%;
+            height: 20rem;
+            margin: auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 20rem;
+        }
+
+        .red {
+            color: #F00;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <h1>Uso</h1>
+                <p>O exemplo a seguir gera um AFD que aceita cadeias de caracteres 0 ou 1 de comprimento par:</p>
+                <pre><code class="javascript">[
+    { // nó 0
+        o: 0,
+        r: 'q0',
+        f: true,
+        t:[
+            {s:['0','1'],d:'1'}, // transição
+        ]
+    },
+    { // nó 1
+        o: 1,
+        r: 'q1',
+        t: [
+            {s:['0','1'],d:'0'}, // transição
+        ]
+    }
+]</code>   
+        </pre>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <h1>Onde:</h1>
+                <p>
+                    O objeto <em>nó</em> possui três propriedades:
+                </p>
+                <ul>
+                    <li>o: ordem, serve para identificar o nó</li>
+                    <li>f: booleano indicando que o estado é final</li>
+                    <li>t: array de transições indicando suas transições</li>
+                    <li>r: rótulo que será dado ao nó</li>
+                </ul>
+                <p>
+                    O objeto <em>transição</em> possui duas propriedades:
+                </p>
+                <ul>
+                    <li>s: cadeia de caracteres indicando quais caracteres farão a transição ao serem lidos</li>
+                    <li>d: nó para onde a transição será efetuada ao ler os caracteres informados</li>
+                </ul>
+                <p><em>Note que o estado inicial sempre será o nó de ordem 0 e o(s) nó(s) final(is) está(ão) destacado(s) com a cor <span class="red">vermelha</span>.</em></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <textarea id="txt-automato">
+                    [
+                    { // nó 0
+                    o: 0,
+                    r: 'q0',
+                    f: true,
+                    t:[
+                    {s:['0','1'],d:'1'}, // transição
+                    ]
+                    },
+                    { // nó 1
+                    o: 1,
+                    r: 'q1',
+                    t: [
+                    {s:['0','1'],d:'0'}, // transição
+                    ]
+                    }
+                    ]
+                </textarea><button class="btn btn-default" id="gerar-afd">Gerar AFD</button>
+            </div>
+            <div id="afd-container" class="col-md-6 col-sm-12">
+                <div id="afd"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <input type="text" id="txt-entrada" />
+                <button class="btn btn-default" id="validar-entrada">Validar</button>
+                <span id="msg-validacao"></span>
+            </div>
+        </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.slim.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/sigma.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script src="~/Scripts/plugins/sigma.renderers.edgeLabels.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sigma.js/1.1.0/plugins/sigma.renderers.parallelEdges.min.js"></script>
+    <script type="text/javascript">
+        var afd = null;
+
+        $(document).ready(function () {
+            $('pre code').each(function (i, block) {
+                hljs.highlightBlock(block);
+            });
+            $("#gerar-afd").on("click", function () {
+                $('#afd').remove();
+                $('#afd-container').html('<div id="afd"></div>');
+
+                afd = eval($("#txt-automato").val()).sort(function (a, b) {
+                    if (a.o < b.o) {
+                        return -1;
+                    }
+                    if (a.o > b.o) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+                var nodeColor = "#CCC";
+                var finalNodeColor = "#F00";
+                var edgeColor = "#000";
+                var labelColor = "#000";
+
+                var s = new sigma({
+                    renderer: {
+                        container: document.getElementById('afd'),
+                        type: 'canvas'
+                    },
+                    settings: {
+                        maxEdgeSize: 1,
+                        minArrowSize: 10,
+                        maxNodeSize: 10,
+                        labelThreshold: 0,
+                        labelSize: "proportional",
+                        labelSizeRatio: 1.5,
+                        defaultLabelColor: labelColor,
+                        labelAlignment: "inside"
+                    }
+                });
+
+                s.graph.addNode({
+                    id: 'n-',
+                    x: 0.3,
+                    y: 0,
+                    size: 0,
+                    color: "#FFF"
+                });
+
+                var counter = 1;
+
+                var linhas = Math.round(Math.sqrt(afd.length));
+                var maiorNumeroColunas = Math.round(Math.pow(2, linhas - 1));
+
+                for (var i = 0; i < afd.length; ++i) {
+                    var linha = Math.round(Math.sqrt(i));
+                    var maxColunas = Math.round(Math.pow(2, linha - 1));
+
+                    var subIndice = i - linha;
+
+                    var node = afd[i];
+
+                    var color = node.f ? finalNodeColor : nodeColor;
+                    var label = node.r ? node.r : "q" + i.toString();
+
+                    s.graph.addNode({
+                        id: 'n' + i.toString(),
+                        label: label,
+                        x: (maiorNumeroColunas / (maxColunas + 1)) + subIndice / 2,
+                        y: linha,
+                        size: 1,
+                        color: color
+                    });
+
+                    counter += 0.4;
+                }
+
+                s.graph.addEdge({
+                    id: 'en-',
+                    source: 'n-',
+                    target: 'n0',
+                    color: "#CCC",
+                    type: 'arrow',
+                    count: 0
+                })
+
+                for (var i = 0; i < afd.length; ++i) {
+                    var node = afd[i];
+
+                    if (node.t)
+                        for (j = 0; j < node.t.length; ++j) {
+                            var t = node.t[j];
+
+                            var arrowType = i == t.d || t.d < i ? 'curvedArrow' : 'arrow';
+
+                            s.graph.addEdge({
+                                id: 'en' + i.toString() + 'n' + t.d.toString(),
+                                // Reference extremities:
+                                source: 'n' + i.toString(),
+                                target: 'n' + t.d.toString(),
+                                label: '{' + t.s.join(',') + '}',
+                                color: edgeColor,
+                                type: arrowType,
+                                count: j
+                            });
+                        }
+                }
+                s.refresh();
+
+            });
+            $("#gerar-afd").click();
+            $("#txt-entrada").on("keydown", function () {
+                $("#validar-entrada").removeClass("btn-success").removeClass("btn-danger");
+                $("#msg-validacao").html(null);
+            });
+            $("#validar-entrada").on("click", function () {
+                if (afd != null) {
+                    var w = $("#txt-entrada").val();
+
+                    var linguagem = [];
+                    for (var i = 0; i < afd.length; ++i) {
+                        var t = afd[i].t;
+                        for (var j = 0; j < t.length; ++j) {
+                            var s = t[j].s;
+                            for (var k = 0; k < s.length; ++k) {
+                                if (!linguagem.some(function (x) {
+                                return x.toString() == s[k].toString();
+                                })) {
+                                    linguagem.push(s[k]);
+                                }
+                            }
+                        }
+                    }
+
+                    for (var i = 0; i < w.length; ++i)
+                        if (!linguagem.some(function (x) {
+                            return x.toString() == w[i].toString();
+                        })) {
+                            setEntradaInvalida("O AFD não reconhece o símbolo '" + w[i] + "' pois seu alfabeto é: " + linguagem.join());
+                            return;
+                        }
+
+                    if (w.length <= 0) {
+                        setEntradaValida();
+                    } else {
+                        var s = afd[0];
+                        var processados = [];
+                        for (var i = 0; i < w.length; ++i) {
+                            var proximo = null;
+                            processados.push(w[i]);
+                            if (s.t)
+                                for (var j = 0; j < s.t.length; ++j) {
+                                    var t = s.t[j];
+                                    if (t.s.some(function (x) {
+                                        return x.toString() == w[i].toString();
+                                    })) {
+                                        proximo = afd[parseInt(t.d)];
+                                    }
+                                }
+                            if (proximo != null) {
+                                console.log(w[i] + " leva para q" + proximo.o);
+                                s = proximo;
+                            } else {
+                                setEntradaInvalida("'" + w[i] + "' não possui transição em q" + s.o + ". Lido: " + processados.join());
+                                return;
+                            }
+                        }
+                        if (proximo == null || !proximo.f) {
+                            if (proximo) {
+                                var nomeNo = proximo.r ? proximo.r.toString() : "q" + proximo.o.toString();
+                                setEntradaInvalida("AFD terminou em um estado inválido (" + nomeNo + ").");
+                            }
+                            else {
+                                setEntradaInvalida("AFD terminou em um estado inválido.");
+                            }
+                        }
+                        else {
+                            setEntradaValida();
+                        }
+                    }
+                }
+            });
+        });
+
+        function setEntradaValida(msg) {
+            $("#validar-entrada").addClass("btn-success");
+            $("#msg-validacao").html(msg);
+        }
+        function setEntradaInvalida(msg) {
+            $("#validar-entrada").addClass("btn-danger");
+            $("#msg-validacao").html(msg);
+        }
+    </script>
+</body>
+</html>
