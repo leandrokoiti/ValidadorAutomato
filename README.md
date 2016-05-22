@@ -26,3 +26,5 @@ um executar em qualquer lugar.
 Como eu só usei esse validador para encontrar palavras aceitar indevidamente, eu não testei muito
 a fundo, o ideal seria criar testes para validar a lógica de criação do AFD e quem sabe até gerar
 possíveis casos de teste de forma automática a partir do AFD gerado!
+
+Criar um validador para AFND!
