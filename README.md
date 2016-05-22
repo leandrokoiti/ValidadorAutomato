@@ -3,6 +3,8 @@ ValidadorAutomato é um projetinho básico feito com HTML, CSS e JavaScript na i
 uma ferramenta simples para criar um Autômato Finito Determínistico através da notação JSON e,
 a partir daí, conseguir validar o AFD através de palavras passadas a ele.
 
+Pra quem não quiser baixar o projeto basta acessar: http://validadorautomato.azurewebsites.net/
+
 # Como Usar
 
 ## Passo 1: Baixar o Visual Studio 2015 Community
