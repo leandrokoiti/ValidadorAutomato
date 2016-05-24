@@ -23,8 +23,8 @@ Além disso, não existe necessidade de ser um projeto ASP.NET MVC então o idea
 e deixar somente os arquivos HTML, CSS e JS que são de fatos necessários para permitir qualquer
 um executar em qualquer lugar.
 
-Como eu só usei esse validador para encontrar palavras aceitar indevidamente, eu não testei muito
+Como eu só usei esse validador para encontrar palavras aceitas indevidamente, eu não testei muito
 a fundo, o ideal seria criar testes para validar a lógica de criação do AFD e quem sabe até gerar
 possíveis casos de teste de forma automática a partir do AFD gerado!
 
-Criar um validador para AFND!
+Criar um validador para AFND.
