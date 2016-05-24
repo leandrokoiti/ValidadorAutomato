@@ -12,7 +12,11 @@ Apesar de o código só usar HTML, CSS e JS, ele foi feito utilizando o Microsof
 2015 Community e a estrutura do ASP.NET MVC, portanto é preciso primeiro baixar o VS 2015 CE
 de: https://www.visualstudio.com/pt-br/downloads/download-visual-studio-vs.aspx.
 
-## Passo 2: Executar o código
+## Passo 2: Baixar o ASP.NET 5
+No momento que essa documentação foi escrita a versão disponível era a RC1 que pode ser baixada de: https://blogs.msdn.microsoft.com/webdev/2015/11/18/announcing-asp-net-5-release-candidate-1/.
+Logo após instalar o VS2015 no passo anterior instale essa atualização.
+
+## Passo 3: Executar o código
 Após baixar o projeto é só abrir a solução no Visual Studio e pressionar CTRL+F5 para executá-lo.
 
 # TODOs
