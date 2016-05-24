@@ -1,62 +1,97 @@
-﻿(function (gerarAfdId, afdId, afdContainerId, txtAutomatoId, txtEntradaId, validarEntradaId, msgValidacaoId, btnValidarEntradaId) {
+﻿(function () {
     var afd = null;
     var afd_renderer = null;
 
-    $(document).ready(function () {
-        var doc = CodeMirror.fromTextArea(document.getElementById("txt-automato"));
+    var gerarAfdId = "#gerar-afd";
+    var afdId = '#afd';
+    var afdContainerId = '#afd-container';
+    var txtAutomatoId = "#txt-automato";
+    var txtEntradaId = "#txt-entrada";
+    var validarEntradaId = "#msg-validacao";
+    var msgValidacaoId = "#msg-validacao-aviso";
+    var btnValidarEntradaId = "#validar-entrada";
 
+    var doc = null;
+
+    var classeValido = "alert-success";
+    var classeInvalido = "alert-danger";
+
+    var MSG_NAO_FAZ_PARTE_DO_ALFABETO = "O AFD não reconhece o símbolo '{0}' pois seu alfabeto é: {1}";
+    var MSG_TRANSICAO_INEXISTENTE = "'{0}' não possui transição em {1}. Lido: {2}";
+    var MSG_ESTADO_NAO_FINAL_PROXIMO = "AFD terminou em um estado não final ({0}).";
+    var MSG_ESTADO_NAO_FINAL = "AFD terminou em um estado não final.";
+    var MSG_PALAVRA_ACEITA = "Palavra aceita!";
+
+    $(document).ready(function () {
+        // configura o codemirror
         $('pre code').each(function (i, block) {
             hljs.highlightBlock(block);
         });
 
+        // evento ao clicar no botão "gerar afd"
         $(gerarAfdId).on("click", function () {
-            $(afdId).remove();
-            $(afdContainerId).html('<div id="' + afdId.replace("#", "") + '"></div>');
-
-            afd = new AFD(doc.getValue());
-            afd_renderer = new AFD.Renderer.Default(afd, document.getElementById('afd'))
-            afd_renderer.render();
+            gerarAfd();
         });
 
-        $(gerarAfdId).click();
-
+        // evento disparado ao mudar algum texto na palavra para validar
         $(txtEntradaId).on("keydown", function () {
-            $(validarEntradaId).removeClass("alert-success").removeClass("alert-danger");
-            $(msgValidacaoId).html(null);
+            limparValidacao();
         });
 
+        // evento ao clicar no botão "validar"
         $(btnValidarEntradaId).on("click", function () {
-            if (afd != null) {
-                var w = $(txtEntradaId).val();
-
-                var resposta = afd.testarPalavra(w);
-
-                if (resposta === AFD_MotivosRejeicao.ACEITO) {
-                    setEntradaValida("Palavra aceita!");
-                } else if (resposta.resultado === AFD_MotivosRejeicao.NAO_FAZ_PARTE_DO_ALFABETO) {
-                    setEntradaInvalida("O AFD não reconhece o símbolo '" + resposta.simbolo + "' pois seu alfabeto é: " + afd.getAlfabeto().join());
-                } else if (resposta.resultado === AFD_MotivosRejeicao.TRANSICAO_INEXISTENTE) {
-                    setEntradaInvalida("'" + resposta.simbolo + "' não possui transição em " + afd.getNomeNo(resposta.no) + ". Lido: " + resposta.processados.join());
-                } else if (resposta.resultado === AFD_MotivosRejeicao.ESTADO_NAO_FINAL) {
-                    if (resposta.proximo) {
-                        setEntradaInvalida("AFD terminou em um estado não final (" + afd.getNomeNo(resposta.proximo) + ").");
-                    }
-                    else {
-                        setEntradaInvalida("AFD terminou em um estado não final.");
-                    }
-                }
-            }
+            validarAfd();
         });
+
+        doc = CodeMirror.fromTextArea(document.getElementById(txtAutomatoId.replace("#", "")));
+
+        // gera o afd de exemplo
+        gerarAfd();
     });
 
+    function limparValidacao() {
+        $(validarEntradaId).removeClass(classeValido).removeClass(classeInvalido);
+        $(msgValidacaoId).html(null);
+    };
+
+    function validarAfd() {
+        if (afd != null) {
+            var w = $(txtEntradaId).val();
+            var resposta = afd.testarPalavra(w);
+            if (resposta === AFD.MotivosRejeicao.ACEITO) {
+                setEntradaValida(MSG_PALAVRA_ACEITA);
+            } else if (resposta.resultado === AFD.MotivosRejeicao.NAO_FAZ_PARTE_DO_ALFABETO) {
+                setEntradaInvalida(MSG_NAO_FAZ_PARTE_DO_ALFABETO.format(resposta.simbolo, afd.getAlfabeto().join()));
+            } else if (resposta.resultado === AFD.MotivosRejeicao.TRANSICAO_INEXISTENTE) {
+                setEntradaInvalida(MSG_TRANSICAO_INEXISTENTE.format(resposta.simbolo, afd.getNomeNo(resposta.no), resposta.processados.join()));
+            } else if (resposta.resultado === AFD.MotivosRejeicao.ESTADO_NAO_FINAL) {
+                if (resposta.proximo) {
+                    setEntradaInvalida(MSG_ESTADO_NAO_FINAL_PROXIMO.format(afd.getNomeNo(resposta.proximo)));
+                }
+                else {
+                    setEntradaInvalida(MSG_ESTADO_NAO_FINAL);
+                }
+            }
+        }
+    };
+
+    function gerarAfd() {
+        $(afdId).remove();
+        $(afdContainerId).html('<div id="' + afdId.replace("#", "") + '"></div>');
+
+        afd = new AFD(doc.getValue());
+        afd_renderer = new AFD.Renderer.Default(afd, document.getElementById(afdId.replace("#", "")));
+        afd_renderer.render();
+    };
+
     function setEntradaValida(msg) {
-        $(validarEntradaId).addClass("alert-success");
+        $(validarEntradaId).addClass(classeValido);
         $(msgValidacaoId).html(msg);
     }
 
     function setEntradaInvalida(msg) {
-        $(validarEntradaId).addClass("alert-danger");
+        $(validarEntradaId).addClass(classeInvalido);
         $(msgValidacaoId).html("Erro: " + msg);
     }
 
-})("#gerar-afd", '#afd', '#afd-container', "#txt-automato", "#txt-entrada", "#msg-validacao", "#msg-validacao-aviso", "#validar-entrada");
+})();

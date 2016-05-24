@@ -8,6 +8,7 @@
 /// <reference path="js/afd/afd.transicao.js" />
 /// <reference path="js/etc.min.js" />
 /// <reference path="js/etc/index.js" />
+/// <reference path="js/etc/string.js" />
 /// <reference path="js/sigma.min.js" />
 /// <reference path="js/sigma/sigma.js" />
 /// <reference path="js/sigma/sigma.renderers.edgelabels.js" />

@@ -39,21 +39,21 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 gulp.task("min:sigma", function () {
     return gulp.src([paths.sigmajs], { base: "." })
         .pipe(concat(paths.jsroot + "sigma.min.js"))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
 gulp.task("min:afd", function () {
     return gulp.src([paths.afdjs, "!*min.js"], { base: "." })
         .pipe(concat(paths.jsroot + "afd.min.js"))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
 gulp.task("min:etc", function () {
     return gulp.src([paths.etcjs, "!*min.js"], { base: "." })
         .pipe(concat(paths.jsroot + "etc.min.js"))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
