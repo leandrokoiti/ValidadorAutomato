@@ -14,8 +14,10 @@ var paths = {
     webroot: "./wwwroot/"
 };
 
-paths.js = paths.webroot + "js/**/*.js";
-paths.sigmajs = paths.webroot + "js/**/sigma*.js";
+paths.jsroot = paths.webroot + "js/";
+paths.etcjs = paths.webroot + "js/etc/**/*.js";
+paths.sigmajs = paths.webroot + "js/sigma/**/*.js";
+paths.afdjs = paths.webroot + "js/afd/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
 paths.css = paths.webroot + "css/**/*.css";
 paths.cssroot = paths.webroot + "css/";
@@ -35,15 +37,22 @@ gulp.task("clean:css", function (cb) {
 gulp.task("clean", ["clean:js", "clean:css"]);
 
 gulp.task("min:sigma", function () {
-    return gulp.src([paths.sigmajs, "!" + paths.minJs], { base: "." })
-        .pipe(concat("sigma.js"))
+    return gulp.src([paths.sigmajs], { base: "." })
+        .pipe(concat(paths.jsroot + "sigma.min.js"))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min:js", function () {
-    return gulp.src([paths.js, "!" + paths.minJs, "!sigma*"], { base: "." })
-        .pipe(concat(paths.concatJsDest))
+gulp.task("min:afd", function () {
+    return gulp.src([paths.afdjs, "!*min.js"], { base: "." })
+        .pipe(concat(paths.jsroot + "afd.min.js"))
+        .pipe(uglify())
+        .pipe(gulp.dest("."));
+});
+
+gulp.task("min:etc", function () {
+    return gulp.src([paths.etcjs, "!*min.js"], { base: "." })
+        .pipe(concat(paths.jsroot + "etc.min.js"))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });
@@ -55,7 +64,7 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:sigma", "min:js", "less", "min:css"]);
+gulp.task("min", ["min:sigma", "min:afd", "min:etc", "less", "min:css"]);
 
 gulp.task('less', function () {
     return gulp.src(paths.less)
