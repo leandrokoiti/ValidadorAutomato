@@ -61,25 +61,23 @@
                 <div class="col-xs-6">
                     <h1>Gerar AFD</h1>
                     <p>Informe abaixo o JSON do AFD que será gerado e clique em "Gerar AFD". Em caso de dúvidas clique em <a href="#ajuda">[ajuda]</a>.</p>
-                    <textarea id="txt-automato">
-                        [
-                        { // nó 0
-                        o: 0,
-                        r: 'q0',
-                        f: true,
-                        t:[
-                        {s:['0','1'],d:'1'}, // transição
-                        ]
-                        },
-                        { // nó 1
-                        o: 1,
-                        r: 'q1',
-                        t: [
-                        {s:['0','1'],d:'0'}, // transição
-                        ]
-                        }
-                        ]
-                    </textarea>
+                    <textarea id="txt-automato">[
+    {
+        o: 0,
+        r: 'q0',
+        f: true,
+        t:[
+            {s:['0','1'],d:'1'},
+        ]
+    },
+    {
+        o: 1,
+        r: 'q1',
+        t: [
+            {s:['0','1'],d:'0'},
+        ]
+    }
+]</textarea>
                     <button class="btn btn-default" id="gerar-afd">Gerar AFD</button>
                 </div>
                 <div class="col-xs-6">
