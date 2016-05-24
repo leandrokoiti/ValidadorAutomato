@@ -171,10 +171,10 @@
                     if (proximo == null || !proximo.f) {
                         if (proximo) {
                             var nomeNo = proximo.r ? proximo.r.toString() : "q" + proximo.o.toString();
-                            setEntradaInvalida("AFD terminou em um estado inválido (" + nomeNo + ").");
+                            setEntradaInvalida("AFD terminou em um estado não final (" + nomeNo + ").");
                         }
                         else {
-                            setEntradaInvalida("AFD terminou em um estado inválido.");
+                            setEntradaInvalida("AFD terminou em um estado não final.");
                         }
                     }
                     else {

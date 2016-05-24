@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.css">
+    <link href="css/site.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div data-role="page" id="pageone">
+        <div data-role="panel" id="ajuda" data-dismissible="false">
+            <div class="well">
+                Nessa página é possível criar um AFD a partir de objetos escritos na notação JSON e então informar uma palavra de entrada para que seja possível validar
+                se a palavra é reconhecida ou não pelo AFD criado.
+            </div>
+            <hr />
+            <h2>Uso</h2>
+            <p>O exemplo a seguir gera um AFD que aceita cadeias de caracteres 0 ou 1 de comprimento par:</p>
+            <pre><code class="javascript">[
+    { // nó 0
+        o: 0,
+        r: 'q0',
+        f: true,
+        t:[
+            {s:['0','1'],d:'1'}, // transição
+        ]
+    },
+    { // nó 1
+        o: 1,
+        r: 'q1',
+        t: [
+            {s:['0','1'],d:'0'}, // transição
+        ]
+    }
+]</code>   
+        </pre>
+            <h2>Onde:</h2>
+            <p>
+                O objeto <em>nó</em> possui três propriedades:
+            </p>
+            <ul>
+                <li>o: ordem, serve para identificar o nó</li>
+                <li>f: booleano indicando que o estado é final</li>
+                <li>t: array de transições indicando suas transições</li>
+                <li>r: rótulo que será dado ao nó</li>
+            </ul>
+            <p>
+                O objeto <em>transição</em> possui duas propriedades:
+            </p>
+            <ul>
+                <li>s: cadeia de caracteres indicando quais caracteres farão a transição ao serem lidos</li>
+                <li>d: nó para onde a transição será efetuada ao ler os caracteres informados</li>
+            </ul>
+            <p><em>Note que o estado inicial sempre será o nó de ordem 0 e o(s) nó(s) final(is) está(ão) destacado(s) com a cor <span class="red">vermelha</span>.</em></p>
+        </div>
+        <div data-role="main" class="ui-content">
+            <a href="#ajuda">[ajuda]</a>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h1>Gerar AFD</h1>
+                    <p>Informe abaixo o JSON do AFD que será gerado e clique em "Gerar AFD". Em caso de dúvidas clique em <a href="#ajuda">[ajuda]</a>.</p>
+                    <textarea id="txt-automato">
+                        [
+                        { // nó 0
+                        o: 0,
+                        r: 'q0',
+                        f: true,
+                        t:[
+                        {s:['0','1'],d:'1'}, // transição
+                        ]
+                        },
+                        { // nó 1
+                        o: 1,
+                        r: 'q1',
+                        t: [
+                        {s:['0','1'],d:'0'}, // transição
+                        ]
+                        }
+                        ]
+                    </textarea>
+                    <button class="btn btn-default" id="gerar-afd">Gerar AFD</button>
+                </div>
+                <div class="col-xs-6">
+                    <h1>Validar AFD</h1>
+                    <p>Abaixo é possível visualizar o AFD gerado</p>
+                    <div id="afd-container">
+                        <div id="afd"></div>
+                    </div>
+                    <form onsubmit="return false;">
+                        <input type="text" id="txt-entrada" placeholder="Informe a palavra que deseja validar" autofocus />
+                        <button class="btn btn-default" id="validar-entrada">Validar</button>
+                    </form>
+                    <div id="msg-validacao" class="alert" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Aviso:</span>
+                        <span id="msg-validacao-aviso"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script src="js/sigma.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sigma.js/1.1.0/plugins/sigma.renderers.parallelEdges.min.js"></script>
+    <script src="js/site.min.js"></script>
+</body>
+</html>
