@@ -32,3 +32,7 @@ a fundo, o ideal seria criar testes para validar a lógica de criação do AFD e
 possíveis casos de teste de forma automática a partir do AFD gerado!
 
 Criar um validador para AFND.
+
+# TL;DR
+Basta baixar a pasta wwwroot e copiar para seu servidor web favorito (se for o IIS precisa remover 
+o web.config) que o site já vai funcionar sem precisar usar Visual Studio ;)
