@@ -1,0 +1,74 @@
+﻿var Automato = Automato || {};
+/**
+  * Representa um AFND (Autômato Finito Não Determinístico)
+  * @constructor
+  * @param {string} JSON - O json que será utilizado para criar o AFND.
+  */
+Automato.AFND = function (JSON) {
+    /**
+      * Invoca o construtor base
+      */
+    Automato.AFBase.call(this, JSON);
+
+    /**
+      * Testa a palavra informada no AFND gerado.
+      * @param {string} Palavra que será testada no AFND
+      * @returns {Object} Retorna Automato.MotivosRejeicao.ACEITO se a palavra for aceita pelo AFND, 
+      *                   ou um objeto indicando qual o motivo da rejeição.
+      */
+    this.testarPalavra = function testarPalavra(palavra) {
+        // por ora vamos assumir que o AFND aceita a palavra vazia
+        if (!palavra || palavra.length <= 0)
+            return Automato.MotivosRejeicao.ACEITO;
+
+        // verifica se o AFND aceita todos os símbolos da palavra informada
+        var isValida = this.isPalavraValida(palavra);
+
+        if (isValida !== true)
+            return isValida;
+
+        // testa a palavra
+        var no = [this._nos[0]];
+        var processados = [];
+        for (var i = 0; i < palavra.length; ++i) {
+            var proximo = [];
+            processados.push(palavra[i]);
+            var transicoes = no.map(function(n){return n.getTransicoes()});
+            var tLength = transicoes.length;
+
+            if (tLength > 0) {
+                for (var j = 0; j < tLength; ++j) {
+                    var transicao = transicoes[j];
+                    var simbolos = transicao.map(function(s){return s.getSimbolos()});
+                    if (simbolos.some(function (x) {
+                        return x.some(function (p) {
+                            return p.toString() == palavra[i].toString();
+                        });
+                    })) {
+                        proximo.push(this._nos[parseInt(transicao.map(function(d){return d.getDestino();}))]);
+                    }
+                }
+            }
+
+            if (proximo != null && proximo.length > 0) {
+                no = proximo;
+            } else {
+                return {
+                    resultado: Automato.MotivosRejeicao.TRANSICAO_INEXISTENTE,
+                    no: no,
+                    processados: processados,
+                    simbolo: palavra[i]
+                };
+            }
+        }
+
+        if (proximo == null || !proximo.some(function (p) { return p.getFinal(); })) {
+            return {
+                resultado: Automato.MotivosRejeicao.ESTADO_NAO_FINAL,
+                proximo: proximo
+            };
+        }
+
+        return Automato.MotivosRejeicao.ACEITO;
+    }
+}

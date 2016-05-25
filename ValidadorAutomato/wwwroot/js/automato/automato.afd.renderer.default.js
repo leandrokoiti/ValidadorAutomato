@@ -1,5 +1,6 @@
-﻿AFD = AFD || {};
-AFD.Renderer = AFD.Renderer || {};
+﻿var Automato = Automato || {};
+Automato.AFD = Automato.AFD || {};
+Automato.AFD.Renderer = Automato.AFD.Renderer || {};
 /**
   * Representa o renderizador do grafo de um autômato
   * @constructor
@@ -7,9 +8,12 @@ AFD.Renderer = AFD.Renderer || {};
   * @param {HTMLElement} el - O elemento onde o grafo será renderizado.
   * @param {Object} settings - As configurações do sigma.js. Se nada for passado usa configurações padrão.
   */
-AFD.Renderer.Default = function(afd, el, settings) {
-    var _afd = afd;
-    var _el = el;
+Automato.AFD.Renderer.Default = function (afd, el, settings) {
+    /**
+      * Invoca o construtor base
+      */
+    Automato.RendererBase.call(this, afd, el);
+
     var _nodeColor = "#CCC";
     var _finalNodeColor = "#F00";
     var _edgeColor = "#000";
@@ -26,10 +30,10 @@ AFD.Renderer.Default = function(afd, el, settings) {
         labelAlignment: "inside"
     };
 
-    var init = function() {
+    this.init = function() {
         _sigma = new sigma({
             renderer: {
-                container: _el,
+                container: this._el,
                 type: 'canvas'
             },
             settings: _settings
@@ -47,8 +51,8 @@ AFD.Renderer.Default = function(afd, el, settings) {
     this.render = function() {
         var counter = 1;
 
-        var nos = _afd.getNos();
-        var nLength = _afd.getNos().length;
+        var nos = this._afd.getNos();
+        var nLength = this._afd.getNos().length;
 
         var linhas = Math.round(Math.sqrt(nLength));
         var maiorNumeroColunas = Math.round(Math.pow(2, linhas - 1));
@@ -59,7 +63,7 @@ AFD.Renderer.Default = function(afd, el, settings) {
 
             var subIndice = i - linha;
 
-            var node = _afd.getNos()[i];
+            var node = this._afd.getNos()[i];
 
             var color = node.getFinal() ? _finalNodeColor : _nodeColor;
             var label = node.getRotulo();
@@ -112,5 +116,5 @@ AFD.Renderer.Default = function(afd, el, settings) {
         _sigma.refresh();
     };
 
-    init();
+    this.init();
 }

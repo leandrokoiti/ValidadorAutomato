@@ -17,7 +17,8 @@ var paths = {
 paths.jsroot = paths.webroot + "js/";
 paths.etcjs = paths.webroot + "js/etc/**/*.js";
 paths.sigmajs = paths.webroot + "js/sigma/**/*.js";
-paths.afdjs = paths.webroot + "js/afd/**/*.js";
+paths.automatojs = paths.webroot + "js/automato/**/*.js";
+paths.automatoroot = paths.webroot + "js/automato/";
 paths.minJs = paths.webroot + "js/**/*.min.js";
 paths.css = paths.webroot + "css/**/*.css";
 paths.cssroot = paths.webroot + "css/";
@@ -43,9 +44,17 @@ gulp.task("min:sigma", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min:afd", function () {
-    return gulp.src([paths.afdjs, "!*min.js"], { base: "." })
-        .pipe(concat(paths.jsroot + "afd.min.js"))
+gulp.task("min:automato", function () {
+    return gulp.src([paths.automatoroot + "automato.afbase.js",
+    paths.automatoroot + "automato.renderer_base.js",
+    paths.automatoroot + "automato.mensagens.js",
+    paths.automatoroot + "automato.motivos_rejeicao.js",
+    paths.automatoroot + "automato.transicao.js",
+    paths.automatoroot + "automato.no.js",
+    paths.automatoroot + "automato.afd.js",
+    paths.automatoroot + "automato.afnd.js",
+    paths.automatoroot + "automato.afd.renderer.default.js"], { base: "." })
+        .pipe(concat(paths.jsroot + "automato.min.js"))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });
@@ -64,7 +73,7 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:sigma", "min:afd", "min:etc", "less", "min:css"]);
+gulp.task("min", ["min:sigma", "min:automato", "min:etc", "less", "min:css"]);
 
 gulp.task('less', function () {
     return gulp.src(paths.less)

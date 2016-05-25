@@ -1,4 +1,4 @@
-﻿AFD = AFD || {};
+﻿var Automato = Automato || {};
 /**
   * Representa um nó de um autômato
   * @constructor
@@ -7,7 +7,7 @@
   * @param {Boolean} final - Valor indicando se o nó representa um estado final ou não.
   * @param {Array} transicoes - Um array de {Transicao} contendo todas as transições reconhecidas por este nó.
   */
-AFD.No = function (ordem, rotulo, final, transicoes) {
+Automato.No = function (ordem, rotulo, final, transicoes) {
     var _ordem = ordem;
     var _rotulo = rotulo;
     var _final = final;

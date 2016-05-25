@@ -58,13 +58,13 @@
         if (afd != null) {
             var w = $(txtEntradaId).val();
             var resposta = afd.testarPalavra(w);
-            if (resposta === AFD.MotivosRejeicao.ACEITO) {
+            if (resposta === Automato.MotivosRejeicao.ACEITO) {
                 setEntradaValida(MSG_PALAVRA_ACEITA);
-            } else if (resposta.resultado === AFD.MotivosRejeicao.NAO_FAZ_PARTE_DO_ALFABETO) {
+            } else if (resposta.resultado === Automato.MotivosRejeicao.NAO_FAZ_PARTE_DO_ALFABETO) {
                 setEntradaInvalida(MSG_NAO_FAZ_PARTE_DO_ALFABETO.format(resposta.simbolo, afd.getAlfabeto().join()));
-            } else if (resposta.resultado === AFD.MotivosRejeicao.TRANSICAO_INEXISTENTE) {
+            } else if (resposta.resultado === Automato.MotivosRejeicao.TRANSICAO_INEXISTENTE) {
                 setEntradaInvalida(MSG_TRANSICAO_INEXISTENTE.format(resposta.simbolo, afd.getNomeNo(resposta.no), resposta.processados.join()));
-            } else if (resposta.resultado === AFD.MotivosRejeicao.ESTADO_NAO_FINAL) {
+            } else if (resposta.resultado === Automato.MotivosRejeicao.ESTADO_NAO_FINAL) {
                 if (resposta.proximo) {
                     setEntradaInvalida(MSG_ESTADO_NAO_FINAL_PROXIMO.format(afd.getNomeNo(resposta.proximo)));
                 }
@@ -79,8 +79,8 @@
         $(afdId).remove();
         $(afdContainerId).html('<div id="' + afdId.replace("#", "") + '"></div>');
 
-        afd = new AFD(doc.getValue());
-        afd_renderer = new AFD.Renderer.Default(afd, document.getElementById(afdId.replace("#", "")));
+        afd = new Automato.AFD(doc.getValue());
+        afd_renderer = new Automato.AFD.Renderer.Default(afd, document.getElementById(afdId.replace("#", "")));
         afd_renderer.render();
     };
 

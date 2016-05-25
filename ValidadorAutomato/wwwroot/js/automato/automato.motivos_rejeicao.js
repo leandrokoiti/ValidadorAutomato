@@ -1,8 +1,8 @@
-﻿AFD = AFD || {};
+﻿var Automato = Automato || {};
 /**
   * Representa os estados de validação do autômato.
   */
-AFD.MotivosRejeicao = {
+Automato.MotivosRejeicao = {
     ACEITO: 0,
     NAO_FAZ_PARTE_DO_ALFABETO: 1,
     TRANSICAO_INEXISTENTE: 2,
