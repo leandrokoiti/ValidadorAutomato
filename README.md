@@ -25,8 +25,9 @@ refatorar os JavaScripts para faciliar a manutenção.~~
 
 * ~~Além disso, não existe necessidade de ser um projeto ASP.NET MVC então o ideal seria remover ele
 e deixar somente os arquivos HTML, CSS e JS que são de fatos necessários para permitir qualquer
-um executar em qualquer lugar.~~ Criei um projeto em ASP.NET 5 onde quem quiser só mexer no HTML
-basta baixar a pasta wwwroot e ser feliz.
+um executar em qualquer lugar.~~ 
+
+* Criei um projeto em ASP.NET 5 onde quem quiser só mexer no HTML basta baixar a pasta wwwroot.
 
 * Como eu só usei esse validador para encontrar palavras aceitas indevidamente, eu não testei muito
 a fundo, o ideal seria criar testes para validar a lógica de criação do AFD e quem sabe até gerar
@@ -34,7 +35,11 @@ possíveis casos de teste de forma automática a partir do AFD gerado!
 
 * ~~Criar um validador para AFND.~~
 
-* Escrever um validador para AFND a pilha.
+* É preciso efetuar testes na lógica do AFND pois ele ainda não foi validado.
+
+* ~~Escrever um validador para AFND a pilha.~~
+
+* É preciso efetuar testes na lógica do AP também pois ele também não foi validado.
 
 * Criar uma animação para demonstrar passo a passo o autômato funcionando.
 
