@@ -24,10 +24,6 @@ Automato.AP = function (JSON) {
       *                   ou um objeto indicando qual o motivo da rejeição.
       */
     this.testarPalavra = function testarPalavra(palavra) {
-        // por ora vamos assumir que o AP aceita a palavra vazia
-        if (!palavra || palavra.length <= 0)
-            return Automato.MotivosRejeicao.ACEITO;
-
         // verifica se o AP aceita todos os símbolos da palavra informada
         var isValida = this.isPalavraValida(palavra);
 
@@ -37,6 +33,7 @@ Automato.AP = function (JSON) {
         // testa a palavra
         var no = [this._nos[0]];
         var processados = [];
+        var pilha = [];
         for (var i = 0; i < palavra.length; ++i) {
             var proximo = [];
             processados.push(palavra[i]);
@@ -49,10 +46,27 @@ Automato.AP = function (JSON) {
                     var simbolos = transicao.map(function(s){return s.getSimbolos()});
                     if (simbolos.some(function (x) {
                         return x.some(function (p) {
-                            return p.toString() == palavra[i].toString();
+                            return p === null || p.length <= 0 || p.toString() == palavra[i].toString();
                         });
                     })) {
-                        proximo.push(this._nos[parseInt(transicao.map(function(d){return d.getDestino();}))]);
+                        var proximoEstado = this._nos[parseInt(transicao.map(function (d) { return d.getDestino(); }))];
+                        proximo.push(proximoEstado);
+                        var removerPilha = transicao.getRemoverPilha();
+                        var adicionarPilha = transicao.adicionarPilha();
+                        if (removerPilha) {
+                            for (var i = 0; i < removerPilha.length; ++i) {
+                                // verifica se o que está sendo solicitado para remover, é o que está no topo da pilha
+                                if (pilha[pilha.length - 1] == removerPilha[i]) {
+                                    pilha.pop();
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                        if (adicionarPilha) {
+                            for (var i = 0; i < adicionarPilha.length; ++i)
+                                pilha.push(adicionarPilha[i]);
+                        }
                     }
                 }
             }
@@ -73,6 +87,12 @@ Automato.AP = function (JSON) {
             return {
                 resultado: Automato.MotivosRejeicao.ESTADO_NAO_FINAL,
                 proximo: proximo
+            };
+        }
+
+        if (pilha.length > 0) {
+            return {
+                resultado: Automato.MotivosRejeicao.PILHA_NAO_VAZIA
             };
         }
 
