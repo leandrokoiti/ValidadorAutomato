@@ -20,10 +20,10 @@ Logo após instalar o VS2015 no passo anterior instale essa atualização.
 Após baixar o projeto é só abrir a solução no Visual Studio e pressionar CTRL+F5 para executá-lo.
 
 # TODOs
-~~* Eu fiz o código as pressas só para poder testar os AFDs que eu estava criando, por isso é preciso
+~~ * Eu fiz o código as pressas só para poder testar os AFDs que eu estava criando, por isso é preciso
 refatorar os JavaScripts para faciliar a manutenção.~~
 
-~~* Além disso, não existe necessidade de ser um projeto ASP.NET MVC então o ideal seria remover ele
+~~ * Além disso, não existe necessidade de ser um projeto ASP.NET MVC então o ideal seria remover ele
 e deixar somente os arquivos HTML, CSS e JS que são de fatos necessários para permitir qualquer
 um executar em qualquer lugar.~~ Criei um projeto em ASP.NET 5 onde quem quiser só mexer no HTML
 basta baixar a pasta wwwroot e ser feliz.
@@ -32,7 +32,7 @@ basta baixar a pasta wwwroot e ser feliz.
 a fundo, o ideal seria criar testes para validar a lógica de criação do AFD e quem sabe até gerar
 possíveis casos de teste de forma automática a partir do AFD gerado!
 
-~~* Criar um validador para AFND.~~
+~~ * Criar um validador para AFND.~~
 
 * Escrever um validador para AFND a pilha.
 
