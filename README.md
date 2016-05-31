@@ -36,6 +36,8 @@ possíveis casos de teste de forma automática a partir do AFD gerado!
 
 Escrever um validador para AFND a pilha.
 
+Criar uma animação para demonstrar passo a passo o autômato funcionando.
+
 # TL;DR
 Basta baixar a pasta ~/ValidadorAutomato/wwwroot e copiar para seu servidor web favorito (se for o IIS precisa remover 
 o web.config) que o site já vai funcionar sem precisar usar Visual Studio ;)
