@@ -40,7 +40,7 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 gulp.task("min:sigma", function () {
     return gulp.src([paths.sigmajs], { base: "." })
         .pipe(concat(paths.jsroot + "sigma.min.js"))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
@@ -53,16 +53,18 @@ gulp.task("min:automato", function () {
     paths.automatoroot + "automato.no.js",
     paths.automatoroot + "automato.afd.js",
     paths.automatoroot + "automato.afnd.js",
-    paths.automatoroot + "automato.afd.renderer.default.js"], { base: "." })
+    paths.automatoroot + "automato.ap.js",
+    paths.automatoroot + "automato.afd.renderer.default.js",
+    paths.automatoroot + "automato.factory.js", ], { base: "." })
         .pipe(concat(paths.jsroot + "automato.min.js"))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
 gulp.task("min:etc", function () {
     return gulp.src([paths.etcjs, "!*min.js"], { base: "." })
         .pipe(concat(paths.jsroot + "etc.min.js"))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest("."));
 });
 

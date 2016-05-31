@@ -11,6 +11,13 @@ Automato.AFND = function (JSON) {
     Automato.AFBase.call(this, JSON);
 
     /**
+      * Retorna o nome do tipo de autômato identificado a partir das regras criadas.
+      */
+    this.getTipoAutomato = function getTipoAutomato() {
+        return Automato.AFND.GetTipoAutomato();
+    }
+
+    /**
       * Testa a palavra informada no AFND gerado.
       * @param {string} Palavra que será testada no AFND
       * @returns {Object} Retorna Automato.MotivosRejeicao.ACEITO se a palavra for aceita pelo AFND, 
@@ -72,3 +79,4 @@ Automato.AFND = function (JSON) {
         return Automato.MotivosRejeicao.ACEITO;
     }
 }
+Automato.AFND.GetTipoAutomato = function () { return "AFND" };

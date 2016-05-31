@@ -22,7 +22,7 @@ Automato.AFBase = function (JSON) {
             return 0;
         }).map(function (no) {
             var transicoes = (no.t ? no.t : []).map(function (t) {
-                return new Automato.Transicao(t.s, t.d);
+                return new Automato.Transicao(t.s, t.d, t.rp, t.ap);
             });
             return new Automato.No(no.o, no.r, no.f, transicoes)
         });
@@ -78,13 +78,9 @@ Automato.AFBase = function (JSON) {
     }
 
     /**
-      * Retorna um Boolean indicando se todos os símbolos da palavra informada possuem pelo menos uma transição dentro do AF.
-      * @param {string} palavra - Palavra que será verificada.
-      * @returns {Boolean} Retorna 'true' se todos os símbolos da palavra possuírem pelo menos uma transição dentro do AF, 'false' caso contrário.
+      * Retorna o nome do tipo de autômato identificado a partir das regras criadas.
       */
-    this.getNomeNo = function getNomeNo(no) {
-        return no.toString();
-    }
+    this.getTipoAutomato = function getTipoAutomato() { throw Automato.Mensagens.METODO_NAO_IMPLEMENTADO; }
 
     /**
       * Testa a palavra informada no AF gerado.

@@ -13,8 +13,8 @@
     <div data-role="page" id="pageone">
         <div data-role="panel" id="ajuda" data-dismissible="false">
             <div class="well">
-                Nessa página é possível criar um AFD a partir de objetos escritos na notação JSON e então informar uma palavra de entrada para que seja possível validar
-                se a palavra é reconhecida ou não pelo AFD criado.
+                Nessa página é possível criar um autômato a partir de objetos escritos na notação JSON e então informar uma palavra de entrada para que seja
+                validada no autômato criado.
             </div>
             <hr />
             <h2>Uso</h2>
@@ -52,6 +52,8 @@
             </p>
             <ul>
                 <li>s: cadeia de caracteres indicando quais caracteres farão a transição ao serem lidos</li>
+                <li>ap: cadeia de caracteres que serão adicionados à pilha (para PDAs)</li>
+                <li>rp: cadeia de caracteres que serão retirados da pilha (para PDAs)</li>
                 <li>d: nó para onde a transição será efetuada ao ler os caracteres informados</li>
             </ul>
             <p><em>Note que o estado inicial sempre será o nó de ordem 0 e o(s) nó(s) final(is) está(ão) destacado(s) com a cor <span class="red">vermelha</span>.</em></p>
@@ -60,8 +62,8 @@
             <a href="#ajuda">[ajuda]</a>
             <div class="row">
                 <div class="col-xs-6">
-                    <h1>Gerar AFD</h1>
-                    <p>Informe abaixo o JSON do AFD que será gerado e clique em "Gerar AFD". Em caso de dúvidas clique em <a href="#ajuda">[ajuda]</a>.</p>
+                    <h1>Gerar Autômato</h1>
+                    <p>Informe abaixo o JSON do autômato que será gerado e clique em "Gerar Autômato". Em caso de dúvidas clique em <a href="#ajuda">[ajuda]</a>.</p>
                     <textarea id="txt-automato">[
     {
         o: 0,
@@ -79,11 +81,11 @@
         ]
     }
 ]</textarea>
-                    <button class="btn btn-default" id="gerar-afd">Gerar AFD</button>
+                    <button class="btn btn-default" id="gerar-afd">Gerar Autômato</button>
                 </div>
                 <div class="col-xs-6">
-                    <h1>Validar AFD</h1>
-                    <p>Abaixo é possível visualizar o AFD gerado</p>
+                    <h1>Validar Autômato <span id="tipo-automato"></span></h1>
+                    <p>Abaixo é possível visualizar o autômato gerado</p>
                     <div id="afd-container">
                         <div id="afd"></div>
                     </div>

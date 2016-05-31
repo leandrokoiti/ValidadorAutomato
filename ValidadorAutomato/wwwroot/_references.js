@@ -1,10 +1,12 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
 /// <reference path="js/automato.min.js" />
-/// <reference path="js/automato/automato - copy.afd.js" />
+/// <reference path="js/automato/automato.afbase.js" />
 /// <reference path="js/automato/automato.afd.js" />
 /// <reference path="js/automato/automato.afd.renderer.default.js" />
 /// <reference path="js/automato/automato.afnd.js" />
+/// <reference path="js/automato/automato.ap.js" />
+/// <reference path="js/automato/automato.factory.js" />
 /// <reference path="js/automato/automato.mensagens.js" />
 /// <reference path="js/automato/automato.motivos_rejeicao.js" />
 /// <reference path="js/automato/automato.no.js" />
